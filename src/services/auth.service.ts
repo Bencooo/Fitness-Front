@@ -2,7 +2,7 @@ import {ServiceResult} from "./service.result";
 import axios, {AxiosError, AxiosRequestHeaders} from "axios";
 import {ISubscribe} from "../models/subscribe.model";
 import {ILogin} from "../models/login.model";
-import {IUserId} from "../models/user.model";
+import {IUser, IUserId} from "../models/user.model";
 import {ISessionId} from "../models/session.model";
 import {APIService} from "./api.service";
 
@@ -25,11 +25,8 @@ export class AuthService {
 
     static async login(input: ILogin): Promise<ServiceResult<ISessionId>> {
         try {
-            console.log("Données envoyées: ", input);
             const res = await axios.post(`${APIService.baseURL}/auth/login`, input);
-            console.log("Réponse de l'API: ", res);
             if(res.status === 200) {
-                console.log("Ça marche !");
                 return ServiceResult.success<ISessionId>(res.data);
             }
             return ServiceResult.failed();
@@ -57,5 +54,4 @@ export class AuthService {
             return ServiceResult.failed();
         }
     }
-
 }

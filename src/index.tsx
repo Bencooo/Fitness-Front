@@ -6,6 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Subscribe from "./components/subscribe/Subscribe";
 import Login from "./components/login/Login";
+import GymManagement from "./components/Admin/SalleEntrainement";
+import UserManagement from "./components/Admin/UserManagement";
+import ExerciseTypeManagement from "./components/Admin/ExerciseTypeManagement";
 import ConnectedRoute from "./components/connected-route";
 
 const root = ReactDOM.createRoot(
@@ -17,6 +20,9 @@ root.render(
         <Routes>
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/gyms" element={<GymManagement />} />
+            <Route path="/users" element={<UserManagement />} />
+            <Route path="/exercises" element={<ExerciseTypeManagement />} />
             <Route path="/" element={<ConnectedRoute />}>
             </Route>
             <Route path="/admin" element={<ConnectedRoute access="admin" />}>

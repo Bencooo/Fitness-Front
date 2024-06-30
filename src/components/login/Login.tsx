@@ -30,14 +30,17 @@ function Login() {
     }
 
     const handleLogin = async () => {
+        console.log('Hellooo')
         const res = await AuthService.login(log);
         if(res.errorCode === ServiceErrorCode.success && res.result) {
             localStorage.setItem("token", res.result.token);
-            if(res.result.user.accesses.indexOf('admin') === -1) {
+            console.log(res.result.token)
+            navigate('/team');
+            /*if(res.result.user.accesses.indexOf('admin') === -1) {
                 navigate('/team');
             } else {
                 navigate('/admin/home');
-            }
+            }*/
             return;
         }
         if(res.errorCode === ServiceErrorCode.notFound) {

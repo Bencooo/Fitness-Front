@@ -37,10 +37,15 @@ function ConnectedRoute(attributes: ConnectedRouteAttributes) {
         );
     }
 
-    if(!user || (attributes.access && user.accesses.indexOf(attributes.access) == -1)) {
+    if(!user || (attributes.access)) {
         localStorage.removeItem('token');
         return <Navigate to="/login" />;
     }
+
+    /*if(!user || (attributes.access && user.accesses.indexOf(attributes.access) == -1)) {
+        localStorage.removeItem('token');
+        return <Navigate to="/login" />;
+    }*/
 
     return <Outlet />
 }
