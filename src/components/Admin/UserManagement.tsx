@@ -22,7 +22,6 @@ function UserManagement() {
 
     const handleDeactivate = async (id: string) => {
         const result = await UserService.deactivateUser(id);
-        console.log(id)
         if (result.errorCode === ServiceErrorCode.success) {
             fetchUsers();
         } else {

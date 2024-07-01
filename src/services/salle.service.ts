@@ -1,10 +1,10 @@
-import axios, { AxiosError } from 'axios';
-import { ServiceResult } from './service.result';
+import axios, { AxiosRequestHeaders } from 'axios';
+import { ServiceResult, ServiceErrorCode } from './service.result';
 import { ISalle } from '../models/salle.model';
 import { APIService } from './api.service';
 
-export class GymService {
-    static async getAllGyms(): Promise<ServiceResult<ISalle[]>> {
+export class SalleService {
+    static async getAllSalles(): Promise<ServiceResult<ISalle[]>> {
         try {
             const res = await axios.get(`${APIService.baseURL}/salle`);
             if (res.status === 200) {
@@ -17,9 +17,15 @@ export class GymService {
         }
     }
 
-    static async createGym(gym: ISalle): Promise<ServiceResult<ISalle>> {
+    static async createSalle(salle: ISalle): Promise<ServiceResult<ISalle>> {
+        const token = localStorage.getItem('token');
         try {
-            const res = await axios.post(`${APIService.baseURL}/gyms`, gym);
+            console.log("TOKEN :", token)
+            const res = await axios.post(`${APIService.baseURL}/salle`, salle, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                } as AxiosRequestHeaders
+            });
             if (res.status === 201) {
                 return ServiceResult.success<ISalle>(res.data);
             }
@@ -30,24 +36,34 @@ export class GymService {
         }
     }
 
-    static async editGym(id: string, gym: Partial<ISalle>): Promise<ServiceResult<void>> {
+    static async updateSalle(id: string, salle: ISalle): Promise<ServiceResult<ISalle>> {
         try {
-            const res = await axios.put(`${APIService.baseURL}/gyms/edit/${id}`, gym);
+            const token = localStorage.getItem('token');
+            const res = await axios.put(`${APIService.baseURL}/salle/edit/${id}`, salle, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                } as AxiosRequestHeaders
+            });
             if (res.status === 200) {
-                return ServiceResult.success<void>(undefined);
+                return ServiceResult.success<ISalle>(res.data);
             }
             return ServiceResult.failed();
         } catch (err) {
-            console.error("Erreur lors de l'appel à l'API pour modifier une salle: ", err);
+            console.error("Erreur lors de l'appel à l'API pour mettre à jour une salle: ", err);
             return ServiceResult.failed();
         }
     }
 
-    static async deleteGym(id: string): Promise<ServiceResult<void>> {
+    static async deleteSalle(id: string): Promise<ServiceResult<void>> {
         try {
-            const res = await axios.delete(`${APIService.baseURL}/gyms/delete/${id}`);
-            if (res.status === 200) {
-                return ServiceResult.success<void>(undefined);
+            const token = localStorage.getItem('token');
+            const res = await axios.delete(`${APIService.baseURL}/salle/delete/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                } as AxiosRequestHeaders
+            });
+            if (res.status === 204) {
+                return ServiceResult.success(undefined);
             }
             return ServiceResult.failed();
         } catch (err) {
@@ -56,15 +72,19 @@ export class GymService {
         }
     }
 
-    static async approveGym(id: string): Promise<ServiceResult<void>> {
+    static async getSallesByOwner(token: string): Promise<ServiceResult<ISalle[]>> {
         try {
-            const res = await axios.post(`${APIService.baseURL}/gyms/${id}/approve`);
+            const res = await axios.get(`${APIService.baseURL}/salles/my`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                } as AxiosRequestHeaders
+            });
             if (res.status === 200) {
-                return ServiceResult.success<void>(undefined);
+                return ServiceResult.success<ISalle[]>(res.data);
             }
             return ServiceResult.failed();
         } catch (err) {
-            console.error("Erreur lors de l'appel à l'API pour approuver une salle: ", err);
+            console.error("Erreur lors de l'appel à l'API pour récupérer les salles du propriétaire: ", err);
             return ServiceResult.failed();
         }
     }

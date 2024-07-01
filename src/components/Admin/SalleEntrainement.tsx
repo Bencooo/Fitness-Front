@@ -1,59 +1,47 @@
-import { ChangeEvent, useState, useEffect } from "react";
-import { GymService } from "../../services/salle.service";
+import { useState, useEffect, ChangeEvent } from "react";
+import { SalleService } from "../../services/salle.service";
 import { ISalle } from "../../models/salle.model";
+import { ServiceErrorCode } from "../../services/service.result";
 
-function GymManagement() {
-    const [gyms, setGyms] = useState<ISalle[]>([]);
-    const [currentGym, setCurrentGym] = useState<Partial<ISalle>>({
+function SalleManagement() {
+    const [salles, setSalles] = useState<ISalle[]>([]);
+    const [currentSalle, setCurrentSalle] = useState<Partial<ISalle>>({
         name: '',
         address: '',
         description: '',
-        contact: [],
+        contact: [''],
         capacity: 0,
-        activities: []
+        activities: [''],
+        owner: '',
+        approved: false
     });
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     useEffect(() => {
-        fetchGyms();
+        fetchSalles();
     }, []);
 
-    useEffect(() => {
-        filterGyms();
-    }, [searchTerm, gyms]);
-
-    const fetchGyms = async () => {
-        const result = await GymService.getAllGyms();
-        if (result.errorCode === 0 && result.result) {
-            setGyms(result.result);
+    const fetchSalles = async () => {
+        const result = await SalleService.getAllSalles();
+        if (result.errorCode === ServiceErrorCode.success && result.result) {
+            setSalles(result.result);
         } else {
-            setErrorMessage("Failed to fetch gyms");
+            setErrorMessage("Failed to fetch salles");
         }
-    };
-
-    const filterGyms = () => {
-        const filtered = gyms.filter(gym =>
-            gym.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            gym.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            gym.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            gym.contact.some(contact => contact.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            gym.activities.some(activity => activity.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
-        setGyms(filtered);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
-        setCurrentGym((old) => ({
+        setCurrentSalle((old) => ({
             ...old,
             [name]: value,
         }));
     };
 
     const handleContactChange = (index: number, value: string) => {
-        setCurrentGym((old) => {
+        setCurrentSalle((old) => {
             const contacts = old.contact ? [...old.contact] : [];
             contacts[index] = value;
             return {
@@ -64,14 +52,14 @@ function GymManagement() {
     };
 
     const handleAddContact = () => {
-        setCurrentGym((old) => ({
+        setCurrentSalle((old) => ({
             ...old,
             contact: old.contact ? [...old.contact, ''] : ['']
         }));
     };
 
     const handleRemoveContact = (index: number) => {
-        setCurrentGym((old) => {
+        setCurrentSalle((old) => {
             const contacts = old.contact ? [...old.contact] : [];
             contacts.splice(index, 1);
             return {
@@ -84,47 +72,41 @@ function GymManagement() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         let result;
-        if (isEdit && currentGym.id) {
-            result = await GymService.editGym(currentGym.id, currentGym);
+        if (isEdit && currentSalle._id) {
+            result = await SalleService.updateSalle(currentSalle._id, currentSalle as ISalle);
         } else {
-            result = await GymService.createGym(currentGym as ISalle);
+
+            result = await SalleService.createSalle(currentSalle as ISalle);
         }
-        if (result.errorCode === 0) {
-            fetchGyms();
-            setCurrentGym({
+        if (result.errorCode === ServiceErrorCode.success) {
+            fetchSalles();
+            setCurrentSalle({
                 name: '',
                 address: '',
                 description: '',
-                contact: [],
+                contact: [''],
                 capacity: 0,
-                activities: []
+                activities: [''],
+                owner: '',
+                approved: false
             });
             setIsEdit(false);
         } else {
-            setErrorMessage("Failed to save gym");
+            setErrorMessage("Failed to save salle");
         }
     };
 
-    const handleEdit = (gym: ISalle) => {
-        setCurrentGym(gym);
+    const handleEdit = (salle: ISalle) => {
+        setCurrentSalle(salle);
         setIsEdit(true);
     };
 
     const handleDelete = async (id: string) => {
-        const result = await GymService.deleteGym(id);
-        if (result.errorCode === 0) {
-            fetchGyms();
+        const result = await SalleService.deleteSalle(id);
+        if (result.errorCode === ServiceErrorCode.success) {
+            fetchSalles();
         } else {
-            setErrorMessage("Failed to delete gym");
-        }
-    };
-
-    const handleApprove = async (id: string) => {
-        const result = await GymService.approveGym(id);
-        if (result.errorCode === 0) {
-            fetchGyms();
-        } else {
-            setErrorMessage("Failed to approve gym");
+            setErrorMessage("Failed to delete salle");
         }
     };
 
@@ -143,7 +125,7 @@ function GymManagement() {
                     type="text"
                     name="name"
                     placeholder="Nom"
-                    value={currentGym.name}
+                    value={currentSalle.name}
                     onChange={handleChange}
                     required
                 />
@@ -151,24 +133,24 @@ function GymManagement() {
                     type="text"
                     name="address"
                     placeholder="Adresse"
-                    value={currentGym.address}
+                    value={currentSalle.address}
                     onChange={handleChange}
                     required
                 />
                 <textarea
                     name="description"
                     placeholder="Description"
-                    value={currentGym.description}
+                    value={currentSalle.description}
                     onChange={handleChange}
                     required
                 />
                 <div>
                     <h4>Contacts</h4>
-                    {currentGym.contact?.map((c, index) => (
+                    {currentSalle.contact?.map((contact, index) => (
                         <div key={index}>
                             <input
                                 type="text"
-                                value={c}
+                                value={contact}
                                 onChange={(e) => handleContactChange(index, e.target.value)}
                             />
                             <button type="button" onClick={() => handleRemoveContact(index)}>Supprimer</button>
@@ -180,34 +162,31 @@ function GymManagement() {
                     type="number"
                     name="capacity"
                     placeholder="Capacité"
-                    value={currentGym.capacity}
+                    value={currentSalle.capacity}
                     onChange={handleChange}
                     required
                 />
-                <input
-                    type="text"
+                <textarea
                     name="activities"
-                    placeholder="Activités (séparées par des virgules)"
-                    value={currentGym.activities?.join(', ')}
-                    onChange={(e) => setCurrentGym({ ...currentGym, activities: e.target.value.split(',').map(a => a.trim()) })}
+                    placeholder="Activités"
+                    value={currentSalle.activities}
+                    onChange={handleChange}
                     required
                 />
                 <button type="submit">{isEdit ? 'Modifier' : 'Créer'}</button>
             </form>
-            <h2>Liste des Salles</h2>
+            <h2>Liste des Salles d'Entraînement</h2>
             <ul>
-                {gyms.map((gym) => (
-                    <li key={gym.id}>
-                        <h3>{gym.name}</h3>
-                        <p>Adresse: {gym.address}</p>
-                        <p>Description: {gym.description}</p>
-                        <p>Contact: {gym.contact.join(', ')}</p>
-                        <p>Capacité: {gym.capacity}</p>
-                        <p>Activités: {gym.activities.join(', ')}</p>
-                        <p>Status: {gym.approved ? 'Approuvé' : 'En attente'}</p>
-                        <button onClick={() => handleEdit(gym)}>Modifier</button>
-                        <button onClick={() => handleDelete(gym.id!)}>Supprimer</button>
-                        {!gym.approved && <button onClick={() => handleApprove(gym.id!)}>Approuver</button>}
+                {salles.map((salle) => (
+                    <li key={salle._id}>
+                        <h3>{salle.name}</h3>
+                        <p>Adresse: {salle.address}</p>
+                        <p>Description: {salle.description}</p>
+                        <p>Contacts: {salle.contact.join(', ')}</p>
+                        <p>Capacité: {salle.capacity}</p>
+                        <p>Activités: {salle.activities.join(', ')}</p>
+                        <button onClick={() => handleEdit(salle)}>Modifier</button>
+                        <button onClick={() => handleDelete(salle._id!)}>Supprimer</button>
                     </li>
                 ))}
             </ul>
@@ -215,4 +194,4 @@ function GymManagement() {
     );
 }
 
-export default GymManagement;
+export default SalleManagement;
