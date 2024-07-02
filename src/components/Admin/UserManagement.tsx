@@ -54,7 +54,7 @@ function UserManagement() {
     };
 
     const handleViewMore = (userId: string) => {
-        navigate(`/salle/${userId}`);
+        navigate(`/salles/${userId}`);
     };
 
     return (

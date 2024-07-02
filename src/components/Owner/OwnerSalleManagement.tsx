@@ -1,11 +1,14 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { SalleService } from "../../services/salle.service";
 import { ISalle } from "../../models/salle.model";
 import { ServiceErrorCode } from "../../services/service.result";
 
-function SalleManagement() {
+const token = 'votre_token_ici'; // Remplacez ceci par la méthode appropriée pour obtenir le token de l'utilisateur
+
+function OwnerSalleManagement() {
     const { userId } = useParams<{ userId: string }>();
+    const navigate = useNavigate();
     const [salles, setSalles] = useState<ISalle[]>([]);
     const [currentSalle, setCurrentSalle] = useState<Partial<ISalle>>({
         name: '',
@@ -22,17 +25,10 @@ function SalleManagement() {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     useEffect(() => {
-        fetchSalles();
-    }, []);
-
-    /*const fetchSalles = async () => {
-        const result = await SalleService.getAllSalles();
-        if (result.errorCode === ServiceErrorCode.success && result.result) {
-            setSalles(result.result);
-        } else {
-            setErrorMessage("Failed to fetch salles");
+        if (userId) {
+            fetchSalles();
         }
-    };*/
+    }, [userId]);
 
     const fetchSalles = async () => {
         const result = await SalleService.getSallesByOwner(userId!);
@@ -86,7 +82,6 @@ function SalleManagement() {
         if (isEdit && currentSalle._id) {
             result = await SalleService.updateSalle(currentSalle._id, currentSalle as ISalle);
         } else {
-
             result = await SalleService.createSalle(currentSalle as ISalle);
         }
         if (result.errorCode === ServiceErrorCode.success) {
@@ -98,7 +93,7 @@ function SalleManagement() {
                 contact: [''],
                 capacity: 0,
                 activities: [''],
-                owner: '',
+                owner: userId,
                 approved: false
             });
             setIsEdit(false);
@@ -112,13 +107,8 @@ function SalleManagement() {
         setIsEdit(true);
     };
 
-    const handleDelete = async (id: string) => {
-        const result = await SalleService.deleteSalle(id);
-        if (result.errorCode === ServiceErrorCode.success) {
-            fetchSalles();
-        } else {
-            setErrorMessage("Failed to delete salle");
-        }
+    const handleAddChallenge = (salleId: string) => {
+        navigate(`/challenges/${salleId}`);
     };
 
     return (
@@ -197,7 +187,7 @@ function SalleManagement() {
                         <p>Capacité: {salle.capacity}</p>
                         <p>Activités: {salle.activities.join(', ')}</p>
                         <button onClick={() => handleEdit(salle)}>Modifier</button>
-                        <button onClick={() => handleDelete(salle._id!)}>Supprimer</button>
+                        <button onClick={() => handleAddChallenge(salle._id!)}>Voir Challenge</button>
                     </li>
                 ))}
             </ul>
@@ -205,4 +195,4 @@ function SalleManagement() {
     );
 }
 
-export default SalleManagement;
+export default OwnerSalleManagement;

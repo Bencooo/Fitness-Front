@@ -4,13 +4,17 @@ import { IChallenge } from '../models/challenge.model';
 import { APIService } from './api.service';
 
 export class ChallengeService {
-    static async createChallenge(challenge: IChallenge, token: string): Promise<ServiceResult<IChallenge>> {
+    static async createChallenge(challenge: IChallenge): Promise<ServiceResult<IChallenge>> {
         try {
-            const res = await axios.post(`${APIService.baseURL}/challenges`, challenge, {
+            const token = localStorage.getItem('token');
+            console.log('HELLO');
+            console.log(challenge);  // Log pour vérifier les données envoyées
+            const res = await axios.post(`${APIService.baseURL}/challenge`, challenge, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 } as AxiosRequestHeaders
             });
+            console.log('HELLO2');
             if (res.status === 201) {
                 return ServiceResult.success<IChallenge>(res.data);
             }
@@ -21,9 +25,11 @@ export class ChallengeService {
         }
     }
 
-    static async getChallengesBySalle(salleId: string, token: string): Promise<ServiceResult<IChallenge[]>> {
+    static async getChallengesBySalle(salleId: string): Promise<ServiceResult<IChallenge[]>> {
         try {
-            const res = await axios.get(`${APIService.baseURL}/challenges/salle/${salleId}`, {
+            const token = localStorage.getItem('token');
+            console.log("SALLEID : ", salleId)
+            const res = await axios.get(`${APIService.baseURL}/challenge/salle/${salleId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 } as AxiosRequestHeaders
@@ -38,9 +44,10 @@ export class ChallengeService {
         }
     }
 
-    static async updateChallenge(id: string, challenge: IChallenge, token: string): Promise<ServiceResult<IChallenge>> {
+    static async updateChallenge(id: string, challenge: IChallenge): Promise<ServiceResult<IChallenge>> {
         try {
-            const res = await axios.put(`${APIService.baseURL}/challenges/${id}`, challenge, {
+            const token = localStorage.getItem('token');
+            const res = await axios.put(`${APIService.baseURL}/challenge/${id}`, challenge, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 } as AxiosRequestHeaders
@@ -55,8 +62,9 @@ export class ChallengeService {
         }
     }
 
-    static async deleteChallenge(id: string, token: string): Promise<ServiceResult<void>> {
+    static async deleteChallenge(id: string): Promise<ServiceResult<void>> {
         try {
+            const token = localStorage.getItem('token');
             const res = await axios.delete(`${APIService.baseURL}/challenges/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

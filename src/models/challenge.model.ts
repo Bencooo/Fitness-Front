@@ -7,5 +7,4 @@ export interface IChallenge {
     type: string;
     salleId: string;
     creatorId: string;
-    points: number;
 }
