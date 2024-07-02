@@ -1,9 +1,12 @@
 import { useState, useEffect, ChangeEvent } from "react";
+import { useParams } from "react-router-dom";
 import { SalleService } from "../../services/salle.service";
 import { ISalle } from "../../models/salle.model";
 import { ServiceErrorCode } from "../../services/service.result";
 
 function SalleManagement() {
+    const { userId } = useParams<{ userId: string }>();
+    console.log("USERID :", userId)
     const [salles, setSalles] = useState<ISalle[]>([]);
     const [currentSalle, setCurrentSalle] = useState<Partial<ISalle>>({
         name: '',
@@ -12,7 +15,7 @@ function SalleManagement() {
         contact: [''],
         capacity: 0,
         activities: [''],
-        owner: '',
+        owner: userId,
         approved: false
     });
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -23,8 +26,17 @@ function SalleManagement() {
         fetchSalles();
     }, []);
 
-    const fetchSalles = async () => {
+    /*const fetchSalles = async () => {
         const result = await SalleService.getAllSalles();
+        if (result.errorCode === ServiceErrorCode.success && result.result) {
+            setSalles(result.result);
+        } else {
+            setErrorMessage("Failed to fetch salles");
+        }
+    };*/
+
+    const fetchSalles = async () => {
+        const result = await SalleService.getSallesByOwner(userId!);
         if (result.errorCode === ServiceErrorCode.success && result.result) {
             setSalles(result.result);
         } else {

@@ -25,12 +25,7 @@ export class UserService {
     static async deactivateUser(id: string): Promise<ServiceResult<void>> {
         try {
             const token = localStorage.getItem('token'); // Récupérer le token depuis le localStorage
-            console.log("token: ", token)
-            const res = await axios.put(`${APIService.baseURL}/user/deactivate/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                } as AxiosRequestHeaders
-            });
+            const res = await axios.put(`${APIService.baseURL}/user/deactivate/${id}`);
             if (res.status === 200) {
                 return ServiceResult.success<void>(undefined);
             }

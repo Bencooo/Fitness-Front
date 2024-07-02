@@ -72,9 +72,10 @@ export class SalleService {
         }
     }
 
-    static async getSallesByOwner(token: string): Promise<ServiceResult<ISalle[]>> {
+    static async getSallesByOwner(ownerId: string): Promise<ServiceResult<ISalle[]>> {
         try {
-            const res = await axios.get(`${APIService.baseURL}/salles/my`, {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${APIService.baseURL}/salle/owner/${ownerId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 } as AxiosRequestHeaders
@@ -84,7 +85,7 @@ export class SalleService {
             }
             return ServiceResult.failed();
         } catch (err) {
-            console.error("Erreur lors de l'appel à l'API pour récupérer les salles du propriétaire: ", err);
+            console.error("Erreur lors de l'appel à l'API pour récupérer les salles par propriétaire: ", err);
             return ServiceResult.failed();
         }
     }

@@ -10,6 +10,7 @@ import SalleManagement from "./components/Admin/SalleEntrainement";
 import UserManagement from "./components/Admin/UserManagement";
 import ExerciseTypeManagement from "./components/Admin/ExerciseTypeManagement";
 import BadgeManagement from "./components/Admin/BadgeManagement";
+import ChallengeManagement from "./components/Owner/ChallengeManagement";
 import ConnectedRoute from "./components/connected-route";
 
 const root = ReactDOM.createRoot(
@@ -21,10 +22,11 @@ root.render(
         <Routes>
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/gyms" element={<SalleManagement />} />
+            <Route path="/salle/:userId" element={<SalleManagement />} />
             <Route path="/users" element={<UserManagement />} />
             <Route path="/exercises" element={<ExerciseTypeManagement />} />
             <Route path="/badges" element={<BadgeManagement />} />
+            <Route path="/challenges" element={<ChallengeManagement />} />
             <Route path="/" element={<ConnectedRoute />}>
             </Route>
             <Route path="/admin" element={<ConnectedRoute access="admin" />}>
