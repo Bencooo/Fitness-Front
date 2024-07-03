@@ -1,11 +1,14 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { SalleService } from "../../services/salle.service";
 import { ISalle } from "../../models/salle.model";
 import { ServiceErrorCode } from "../../services/service.result";
-import "./Admin.css";
-function SalleManagement() {
+
+const token = 'votre_token_ici'; // Remplacez ceci par la méthode appropriée pour obtenir le token de l'utilisateur
+
+function OwnerSalleManagement() {
     const { userId } = useParams<{ userId: string }>();
+    const navigate = useNavigate();
     const [salles, setSalles] = useState<ISalle[]>([]);
     const [currentSalle, setCurrentSalle] = useState<Partial<ISalle>>({
         name: '',
@@ -22,17 +25,10 @@ function SalleManagement() {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     useEffect(() => {
-        fetchSalles();
-    }, []);
-
-    /*const fetchSalles = async () => {
-        const result = await SalleService.getAllSalles();
-        if (result.errorCode === ServiceErrorCode.success && result.result) {
-            setSalles(result.result);
-        } else {
-            setErrorMessage("Failed to fetch salles");
+        if (userId) {
+            fetchSalles();
         }
-    };*/
+    }, [userId]);
 
     const fetchSalles = async () => {
         const result = await SalleService.getSallesByOwner(userId!);
@@ -86,7 +82,6 @@ function SalleManagement() {
         if (isEdit && currentSalle._id) {
             result = await SalleService.updateSalle(currentSalle._id, currentSalle as ISalle);
         } else {
-
             result = await SalleService.createSalle(currentSalle as ISalle);
         }
         if (result.errorCode === ServiceErrorCode.success) {
@@ -98,7 +93,7 @@ function SalleManagement() {
                 contact: [''],
                 capacity: 0,
                 activities: [''],
-                owner: '',
+                owner: userId,
                 approved: false
             });
             setIsEdit(false);
@@ -112,19 +107,14 @@ function SalleManagement() {
         setIsEdit(true);
     };
 
-    const handleDelete = async (id: string) => {
-        const result = await SalleService.deleteSalle(id);
-        if (result.errorCode === ServiceErrorCode.success) {
-            fetchSalles();
-        } else {
-            setErrorMessage("Failed to delete salle");
-        }
+    const handleAddChallenge = (salleId: string) => {
+        navigate(`/challenges/${salleId}`);
     };
 
     return (
-        <div id={"manage-salles-container"}>
+        <div>
             <h1>Gestion des Salles d'Entraînement</h1>
-            {errorMessage && <p className={"errorMessage"}>{errorMessage}</p>}
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             <input
                 type="text"
                 placeholder="Rechercher..."
@@ -132,7 +122,6 @@ function SalleManagement() {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <form onSubmit={handleSubmit}>
-                <label>Name :</label><br></br>
                 <input
                     type="text"
                     name="name"
@@ -140,8 +129,7 @@ function SalleManagement() {
                     value={currentSalle.name}
                     onChange={handleChange}
                     required
-                /><br></br>
-                <label>Address :</label><br></br>
+                />
                 <input
                     type="text"
                     name="address"
@@ -149,30 +137,28 @@ function SalleManagement() {
                     value={currentSalle.address}
                     onChange={handleChange}
                     required
-                /><br></br>
-                <label>Description :</label><br></br>
+                />
                 <textarea
                     name="description"
                     placeholder="Description"
                     value={currentSalle.description}
                     onChange={handleChange}
                     required
-                /><br></br>
+                />
                 <div>
-                    <label>Contacts</label><br></br>
+                    <h4>Contacts</h4>
                     {currentSalle.contact?.map((contact, index) => (
                         <div key={index}>
                             <input
                                 type="text"
                                 value={contact}
                                 onChange={(e) => handleContactChange(index, e.target.value)}
-                            /><br></br>
+                            />
                             <button type="button" onClick={() => handleRemoveContact(index)}>Supprimer</button>
                         </div>
                     ))}
                     <button type="button" onClick={handleAddContact}>Ajouter un contact</button>
                 </div>
-                <label>Capacity :</label><br></br>
                 <input
                     type="number"
                     name="capacity"
@@ -180,15 +166,14 @@ function SalleManagement() {
                     value={currentSalle.capacity}
                     onChange={handleChange}
                     required
-                /><br></br>
-                <label>Activities :</label><br></br>
+                />
                 <textarea
                     name="activities"
                     placeholder="Activités"
                     value={currentSalle.activities}
                     onChange={handleChange}
                     required
-                /><br></br>
+                />
                 <button type="submit">{isEdit ? 'Modifier' : 'Créer'}</button>
             </form>
             <h2>Liste des Salles d'Entraînement</h2>
@@ -202,7 +187,7 @@ function SalleManagement() {
                         <p>Capacité: {salle.capacity}</p>
                         <p>Activités: {salle.activities.join(', ')}</p>
                         <button onClick={() => handleEdit(salle)}>Modifier</button>
-                        <button onClick={() => handleDelete(salle._id!)}>Supprimer</button>
+                        <button onClick={() => handleAddChallenge(salle._id!)}>Voir Challenge</button>
                     </li>
                 ))}
             </ul>
@@ -210,4 +195,4 @@ function SalleManagement() {
     );
 }
 
-export default SalleManagement;
+export default OwnerSalleManagement;

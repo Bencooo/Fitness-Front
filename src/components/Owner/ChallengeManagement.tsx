@@ -1,12 +1,12 @@
 import { useState, useEffect, ChangeEvent } from "react";
+import { useParams } from "react-router-dom";
 import { ChallengeService } from "../../services/challenge.service";
 import { IChallenge } from "../../models/challenge.model";
 import { ServiceErrorCode } from "../../services/service.result";
 
-const token = 'votre_token_ici'; // Remplacez ceci par la méthode appropriée pour obtenir le token de l'utilisateur
-const salleId = 'id_de_la_salle'; // Remplacez ceci par l'ID de la salle à laquelle les défis sont associés
 
 function ChallengeManagement() {
+    const { salleId } = useParams<{ salleId: string | undefined }>();
     const [challenges, setChallenges] = useState<IChallenge[]>([]);
     const [currentChallenge, setCurrentChallenge] = useState<Partial<IChallenge>>({
         name: '',
@@ -15,8 +15,7 @@ function ChallengeManagement() {
         difficulty: '',
         type: '',
         salleId: salleId,
-        creatorId: '', // Remplacez ceci par l'ID du créateur si nécessaire
-        points: 0
+        creatorId: 'kbjlknml', // Remplacez ceci par l'ID du créateur si nécessaire
     });
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -26,7 +25,12 @@ function ChallengeManagement() {
     }, []);
 
     const fetchChallenges = async () => {
-        const result = await ChallengeService.getChallengesBySalle(salleId, token);
+        if (!salleId) {
+            setErrorMessage("Salle ID is undefined");
+            return;
+        }
+
+        const result = await ChallengeService.getChallengesBySalle(salleId);
         if (result.errorCode === ServiceErrorCode.success && result.result) {
             setChallenges(result.result);
         } else {
@@ -75,9 +79,9 @@ function ChallengeManagement() {
         e.preventDefault();
         let result;
         if (isEdit && currentChallenge._id) {
-            result = await ChallengeService.updateChallenge(currentChallenge._id, currentChallenge as IChallenge, token);
+            result = await ChallengeService.updateChallenge(currentChallenge._id, currentChallenge as IChallenge);
         } else {
-            result = await ChallengeService.createChallenge(currentChallenge as IChallenge, token);
+            result = await ChallengeService.createChallenge(currentChallenge as IChallenge);
         }
         if (result.errorCode === ServiceErrorCode.success) {
             fetchChallenges();
@@ -89,7 +93,6 @@ function ChallengeManagement() {
                 type: '',
                 salleId: salleId,
                 creatorId: '', // Remplacez ceci par l'ID du créateur si nécessaire
-                points: 0
             });
             setIsEdit(false);
         } else {
@@ -103,7 +106,7 @@ function ChallengeManagement() {
     };
 
     const handleDelete = async (id: string) => {
-        const result = await ChallengeService.deleteChallenge(id, token);
+        const result = await ChallengeService.deleteChallenge(id);
         if (result.errorCode === ServiceErrorCode.success) {
             fetchChallenges();
         } else {
@@ -161,14 +164,6 @@ function ChallengeManagement() {
                     onChange={handleChange}
                     required
                 />
-                <input
-                    type="number"
-                    name="points"
-                    placeholder="Points"
-                    value={currentChallenge.points}
-                    onChange={handleChange}
-                    required
-                />
                 <button type="submit">{isEdit ? 'Modifier' : 'Créer'}</button>
             </form>
             <h2>Liste des Défis</h2>
@@ -180,7 +175,6 @@ function ChallengeManagement() {
                         <p>Équipements: {challenge.equipment.join(', ')}</p>
                         <p>Difficulté: {challenge.difficulty}</p>
                         <p>Type: {challenge.type}</p>
-                        <p>Points: {challenge.points}</p>
                         <button onClick={() => handleEdit(challenge)}>Modifier</button>
                         <button onClick={() => handleDelete(challenge._id!)}>Supprimer</button>
                     </li>

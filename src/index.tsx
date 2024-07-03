@@ -7,6 +7,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Subscribe from "./components/subscribe/Subscribe";
 import Login from "./components/login/Login";
 import SalleManagement from "./components/Admin/SalleEntrainement";
+import OwnerSalleManagement from "./components/Owner/OwnerSalleManagement";
 import UserManagement from "./components/Admin/UserManagement";
 import ExerciseTypeManagement from "./components/Admin/ExerciseTypeManagement";
 import BadgeManagement from "./components/Admin/BadgeManagement";
@@ -22,12 +23,13 @@ root.render(
         <Routes>
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/login" element={<Login />} />
-            
-            <Route path="/salle/:userId" element={<SalleManagement />} />
+
+            <Route path="/salles/:userId" element={<SalleManagement />} />
+            <Route path="/salles/owner/:userId" element={<OwnerSalleManagement />} />
             <Route path="/users" element={<UserManagement />} />
             <Route path="/exercises" element={<ExerciseTypeManagement />} />
             <Route path="/badges" element={<BadgeManagement />} />
-            <Route path="/challenges" element={<ChallengeManagement />} />
+            <Route path="/challenges/:salleId" element={<ChallengeManagement />} />
 
             <Route path="/" /*element={<ConnectedRoute />}*/>
             </Route>
