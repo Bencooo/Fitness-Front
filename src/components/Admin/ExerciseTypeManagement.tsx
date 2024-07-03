@@ -103,7 +103,7 @@ function ExerciseTypeManagement() {
     return (
         <div>
             <h1>Gestion des Types d'Exercices</h1>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {errorMessage && <p className={"errorMessage"}>{errorMessage}</p>}
             <input
                 type="text"
                 placeholder="Rechercher..."

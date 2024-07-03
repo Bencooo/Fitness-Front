@@ -5,7 +5,7 @@ import {AuthService} from "../services/auth.service";
 import {ServiceErrorCode} from "../services/service.result";
 
 export interface ConnectedRouteAttributes {
-    access?: string;
+    access?: number;
 }
 
 function ConnectedRoute(attributes: ConnectedRouteAttributes) {
@@ -37,7 +37,7 @@ function ConnectedRoute(attributes: ConnectedRouteAttributes) {
         );
     }
 
-    if(!user || (attributes.access)) {
+    if(!user || (attributes.access!=100)) {
         localStorage.removeItem('token');
         return <Navigate to="/login" />;
     }

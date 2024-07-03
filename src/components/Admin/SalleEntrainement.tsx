@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { SalleService } from "../../services/salle.service";
 import { ISalle } from "../../models/salle.model";
 import { ServiceErrorCode } from "../../services/service.result";
-
+import "./Admin.css";
 function SalleManagement() {
     const { userId } = useParams<{ userId: string }>();
     console.log("USERID :", userId)
@@ -123,9 +123,9 @@ function SalleManagement() {
     };
 
     return (
-        <div>
+        <div id={"manage-salles-container"}>
             <h1>Gestion des Salles d'Entraînement</h1>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {errorMessage && <p className={"errorMessage"}>{errorMessage}</p>}
             <input
                 type="text"
                 placeholder="Rechercher..."
@@ -133,6 +133,7 @@ function SalleManagement() {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <form onSubmit={handleSubmit}>
+                <label>Name :</label><br></br>
                 <input
                     type="text"
                     name="name"
@@ -140,7 +141,8 @@ function SalleManagement() {
                     value={currentSalle.name}
                     onChange={handleChange}
                     required
-                />
+                /><br></br>
+                <label>Address :</label><br></br>
                 <input
                     type="text"
                     name="address"
@@ -148,28 +150,30 @@ function SalleManagement() {
                     value={currentSalle.address}
                     onChange={handleChange}
                     required
-                />
+                /><br></br>
+                <label>Description :</label><br></br>
                 <textarea
                     name="description"
                     placeholder="Description"
                     value={currentSalle.description}
                     onChange={handleChange}
                     required
-                />
+                /><br></br>
                 <div>
-                    <h4>Contacts</h4>
+                    <label>Contacts</label><br></br>
                     {currentSalle.contact?.map((contact, index) => (
                         <div key={index}>
                             <input
                                 type="text"
                                 value={contact}
                                 onChange={(e) => handleContactChange(index, e.target.value)}
-                            />
+                            /><br></br>
                             <button type="button" onClick={() => handleRemoveContact(index)}>Supprimer</button>
                         </div>
                     ))}
                     <button type="button" onClick={handleAddContact}>Ajouter un contact</button>
                 </div>
+                <label>Capacity :</label><br></br>
                 <input
                     type="number"
                     name="capacity"
@@ -177,14 +181,15 @@ function SalleManagement() {
                     value={currentSalle.capacity}
                     onChange={handleChange}
                     required
-                />
+                /><br></br>
+                <label>Activities :</label><br></br>
                 <textarea
                     name="activities"
                     placeholder="Activités"
                     value={currentSalle.activities}
                     onChange={handleChange}
                     required
-                />
+                /><br></br>
                 <button type="submit">{isEdit ? 'Modifier' : 'Créer'}</button>
             </form>
             <h2>Liste des Salles d'Entraînement</h2>

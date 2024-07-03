@@ -1,11 +1,11 @@
-#subscribe-error-message{
+#login-error-message{
     color: red;
     font-size : 20px;
-    width : 80%;
+    width: 80%;
     margin : 0 auto;
 }
 
-#subscribe-container {
+#login-container {
     display : block;
     width : 50%;
     margin : 15% auto;
@@ -14,21 +14,21 @@
     border-radius: 30px;
 }
 
-#subscribe-container h1{
+#login-container h1{
     text-align : center;
     font-size : 30px;
 }
-#subscribe-container input,#subscribe-container label{
+#login-container input,#login-container label{
     width : 80%;
     font-size: 24px;
     margin : 0 10%;
 }
 
-#subscribe-container input {
+#login-container input {
     margin-bottom: 20px;
 }
 
-#subscribe-container button{
+#login-container button{
     width : 20%;
     font-size : 24px;
     margin : 10px 40%;
