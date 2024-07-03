@@ -1,0 +1,63 @@
+.errorMessage{
+    color : red;
+    font-size : 20px;
+    text-align: center;
+}
+button{
+    font-size : 20px;
+}
+#manage-users-container,#manage-salles-container{
+    width : 80%;
+    margin : 100px auto;
+    padding : 25px;
+    border: .2em solid gray;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#manage-users-container h1,#manage-salles-container h1{
+    text-align : center;
+    font-size : 30px;
+    margin-bottom : 50px;
+}
+
+#manage-users-container .user{
+    text-align: center;
+    list-style: none;
+    display:grid;
+    grid-template-columns: repeat(6,1fr);
+    margin-bottom: 50px;
+    align-items: center;
+}
+
+
+#manage-users-container button {
+    height : 30px;
+    width : 70%;
+}
+
+#manage-salles-container form {
+    width : 70%;
+    margin: 50px auto;
+    align-items: center;
+    background-color : aliceblue;
+    padding : 5%;
+    border-radius : 30px;
+    border : .2em solid #DAE3E2;
+
+}
+
+#manage-salles-container h2 {
+    text-align : center;
+}
+
+#manage-salles-container form input,#manage-salles-container form label, #manage-salles-container form textarea{
+    font-size : 20px;
+    width : 80%;
+    margin : 20px 10%;
+}
+
+#manage-salles-container form button {
+    width : 20%;
+    margin : 20px 40%;
+}

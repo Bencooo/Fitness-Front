@@ -33,13 +33,16 @@ root.render(
             <Route path="/badges" element={<BadgeManagement />} />
             <Route path="/challenges/:salleId" element={<ChallengeManagement />} />
 
+
             <Route path="/salles" element={<SalleList />} />
             <Route path="/challenges" element={<ChallengeList />} />
 
 
             <Route path="/" element={<ConnectedRoute />}>
+
+
             </Route>
-            <Route path="/admin" element={<ConnectedRoute access="admin" />}>
+            <Route path="/admin" element={<ConnectedRoute access={100} />}>
                 <Route path="home" element={<App />} />
             </Route>
         </Routes>

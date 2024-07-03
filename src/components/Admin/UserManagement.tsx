@@ -5,6 +5,7 @@ import { SalleService } from "../../services/salle.service";
 import { IUser } from "../../models/user.model";
 import { ISalle } from "../../models/salle.model";
 import { ServiceErrorCode } from "../../services/service.result";
+import "./Admin.css";
 
 const token = 'votre_token_ici'; // Remplacez ceci par la méthode appropriée pour obtenir le token de l'utilisateur
 
@@ -58,12 +59,12 @@ function UserManagement() {
     };
 
     return (
-        <div>
+        <div id={"manage-users-container"}>
             <h1>Gestion des Utilisateurs</h1>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {errorMessage && <p className={"errorMessage"}>{errorMessage}</p>}
             <ul>
                 {users.map((user: IUser) => (
-                    <li key={user._id}>
+                    <li  className={"user"} key={user._id}>
                         <h3>{user.login}</h3>
                         <p>Status: {user.active ? 'Active' : 'Inactive'}</p>
                         <p>

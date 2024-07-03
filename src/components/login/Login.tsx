@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {AuthService} from "../../services/auth.service";
 import {ServiceErrorCode} from "../../services/service.result";
 import {ILogin} from "../../models/login.model";
+import "./Login.css";
 
 function Login() {
 
@@ -53,15 +54,17 @@ function Login() {
     };
 
     return (
-        <div>
+        <div id={"login-container"}>
             <h1>Login</h1>
-            <input type="text" placeholder='Email Address' onChange={handleEmailChange}/>
-            <input type="password" placeholder='Password' onChange={handlePasswordChange}/>
-            <button onClick={handleLogin}>Login</button>
+            <label>Identifiant :</label><br></br>
+            <input type="text" placeholder='Identifiant' onChange={handleEmailChange}/><br></br>
+            <label>Password :</label><br></br>
+            <input type="password" placeholder='Password' onChange={handlePasswordChange}/><br></br>
             {
                 errorMessage &&
                 <p id="login-error-message">{errorMessage}</p>
             }
+            <button onClick={handleLogin}>Login</button>
         </div>
     )
 }

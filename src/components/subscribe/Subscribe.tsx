@@ -43,12 +43,14 @@ function Subscribe() {
     };
 
     return (
-        <div>
+        <div id={"subscribe-container"}>
             <h1>Subscribe</h1>
-            <input type="text" placeholder='Email Address' onChange={handleEmailChange} />
-            <input type="password" placeholder='Password' onChange={handlePasswordChange} />
+            <label>Identifiant :</label><br></br>
+            <input type="text" placeholder='Identifiant' onChange={handleEmailChange}/><br></br>
+            <label>Password :</label><br></br>
+            <input type="password" placeholder='Password' onChange={handlePasswordChange}/><br></br>
             {
-                errorMessage &&
+            errorMessage &&
                 <p id="subscribe-error-message">{errorMessage}</p>
             }
             <button onClick={handleSubscribe}>Subscribe</button>
