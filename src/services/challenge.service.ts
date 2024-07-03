@@ -25,6 +25,24 @@ export class ChallengeService {
         }
     }
 
+    static async getAllChallenges(): Promise<ServiceResult<IChallenge[]>> {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${APIService.baseURL}/challenge`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                } as AxiosRequestHeaders
+            });
+            if (res.status === 200) {
+                return ServiceResult.success<IChallenge[]>(res.data);
+            }
+            return ServiceResult.failed();
+        } catch (err) {
+            console.error("Erreur lors de l'appel à l'API pour récupérer les défis: ", err);
+            return ServiceResult.failed();
+        }
+    }
+
     static async getChallengesBySalle(salleId: string): Promise<ServiceResult<IChallenge[]>> {
         try {
             const token = localStorage.getItem('token');

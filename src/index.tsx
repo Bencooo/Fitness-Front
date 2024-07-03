@@ -11,6 +11,8 @@ import OwnerSalleManagement from "./components/Owner/OwnerSalleManagement";
 import UserManagement from "./components/Admin/UserManagement";
 import ExerciseTypeManagement from "./components/Admin/ExerciseTypeManagement";
 import BadgeManagement from "./components/Admin/BadgeManagement";
+import SalleList from "./components/Client/SalleList";
+import ChallengeList from "./components/Client/ChallengeList";
 import ChallengeManagement from "./components/Owner/ChallengeManagement";
 import ConnectedRoute from "./components/connected-route";
 
@@ -30,6 +32,10 @@ root.render(
             <Route path="/exercises" element={<ExerciseTypeManagement />} />
             <Route path="/badges" element={<BadgeManagement />} />
             <Route path="/challenges/:salleId" element={<ChallengeManagement />} />
+
+            <Route path="/salles" element={<SalleList />} />
+            <Route path="/challenges" element={<ChallengeList />} />
+
 
             <Route path="/" element={<ConnectedRoute />}>
             </Route>

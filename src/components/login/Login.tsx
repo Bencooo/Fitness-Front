@@ -33,8 +33,10 @@ function Login() {
         console.log('Hellooo')
         const res = await AuthService.login(log);
         if(res.errorCode === ServiceErrorCode.success && res.result) {
-            localStorage.setItem("token", res.result.token);
-            console.log(res.result.token)
+            const { token, user } = res.result;
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(user)); 
+            console.log(token);
             navigate('/team');
             /*if(res.result.user.accesses.indexOf('admin') === -1) {
                 navigate('/team');
