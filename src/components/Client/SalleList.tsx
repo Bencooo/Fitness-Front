@@ -29,7 +29,7 @@ function SalleList() {
     return (
         <div>
             <h1>Liste des Salles d'Entraînement</h1>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {errorMessage && <p className={"errorMessage"}>{errorMessage}</p>}
             <ul>
                 {salles.map((salle) => (
                     <li key={salle._id}>

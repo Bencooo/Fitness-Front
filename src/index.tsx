@@ -27,13 +27,14 @@ root.render(
             <Route path="/login" element={<Login />} />
 
             <Route path="/salles/:userId" element={<SalleManagement />} />
+
             <Route path="/salles/owner/:userId" element={<OwnerSalleManagement />} />
             <Route path="/users" element={<UserManagement />} />
             <Route path="/exercises" element={<ExerciseTypeManagement />} />
             <Route path="/badges" element={<BadgeManagement />} />
             <Route path="/challenges/:salleId" element={<ChallengeManagement />} />
 
-
+            /* User*/
             <Route path="/salles" element={<SalleList />} />
             <Route path="/challenges" element={<ChallengeList />} />
 
@@ -42,6 +43,7 @@ root.render(
 
 
             </Route>
+
             <Route path="/admin" element={<ConnectedRoute access={100} />}>
                 <Route path="home" element={<App />} />
             </Route>

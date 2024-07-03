@@ -39,12 +39,14 @@ function Login() {
             localStorage.setItem("token", token);
             localStorage.setItem("user", JSON.stringify(user)); 
             console.log(token);
-            navigate('/home');
-            /*if(res.result.user.accesses.indexOf('admin') === -1) {
-                navigate('/team');
-            } else {
+            if(res.result.user.accesses === 100) {
                 navigate('/admin/home');
-            }*/
+                return;
+            }if(res.result.user.accesses === 50){
+                navigate('/owner/home');
+                return;
+            }
+            navigate('/salles');
             return;
         }
         if(res.errorCode === ServiceErrorCode.notFound) {

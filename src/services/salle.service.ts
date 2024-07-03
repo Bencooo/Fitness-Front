@@ -76,7 +76,7 @@ export class SalleService {
     static async getSallesByOwner(ownerId: string): Promise<ServiceResult<ISalle[]>> {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`${APIService.baseURL}/salle/owner/${ownerId}`, {
+            const res = await axios.get(`${APIService.baseURL}/salle/${ownerId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 } as AxiosRequestHeaders
