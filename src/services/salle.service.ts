@@ -57,6 +57,7 @@ export class SalleService {
     static async deleteSalle(id: string): Promise<ServiceResult<void>> {
         try {
             const token = localStorage.getItem('token');
+            console.log("ID DELETE :", id)
             const res = await axios.delete(`${APIService.baseURL}/salle/delete/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

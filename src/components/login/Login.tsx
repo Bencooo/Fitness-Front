@@ -4,6 +4,7 @@ import {AuthService} from "../../services/auth.service";
 import {ServiceErrorCode} from "../../services/service.result";
 import {ILogin} from "../../models/login.model";
 import "./Login.css";
+import { IUser, IUserId } from "../../models/user.model";
 
 function Login() {
 
@@ -38,7 +39,7 @@ function Login() {
             localStorage.setItem("token", token);
             localStorage.setItem("user", JSON.stringify(user)); 
             console.log(token);
-            navigate('/team');
+            navigate('/home');
             /*if(res.result.user.accesses.indexOf('admin') === -1) {
                 navigate('/team');
             } else {
