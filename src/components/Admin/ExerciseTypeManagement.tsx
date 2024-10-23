@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { ExerciseTypeService } from "../../services/exerciseType.service";
 import { IExerciseType } from "../../models/exerciseType.model";
 import { ServiceErrorCode } from "../../services/service.result";
+import './ExerciseTypeManagement.css';
 
 function ExerciseTypeManagement() {
     const [exerciseTypes, setExerciseTypes] = useState<IExerciseType[]>([]);
@@ -101,19 +102,21 @@ function ExerciseTypeManagement() {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>Gestion des Types d'Exercices</h1>
-            {errorMessage && <p className={"errorMessage"}>{errorMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <input
                 type="text"
+                className="search-input"
                 placeholder="Rechercher..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <form onSubmit={handleSubmit}>
+            <form className="exercise-form" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     name="name"
+                    className="input-field"
                     placeholder="Nom"
                     value={currentExerciseType.name}
                     onChange={handleChange}
@@ -121,40 +124,47 @@ function ExerciseTypeManagement() {
                 />
                 <textarea
                     name="description"
+                    className="textarea-field"
                     placeholder="Description"
                     value={currentExerciseType.description}
                     onChange={handleChange}
                     required
                 />
-                <div>
+                <div className="muscles-section">
                     <h4>Muscles Ciblés</h4>
                     {currentExerciseType.targetedMuscles?.map((muscle, index) => (
-                        <div key={index}>
+                        <div key={index} className="muscle-item">
                             <input
                                 type="text"
+                                className="input-field"
                                 value={muscle}
                                 onChange={(e) => handleMuscleChange(index, e.target.value)}
                             />
-                            <button type="button" onClick={() => handleRemoveMuscle(index)}>Supprimer</button>
+                            <button type="button" className="remove-button"
+                                    onClick={() => handleRemoveMuscle(index)}>Supprimer
+                            </button>
                         </div>
                     ))}
-                    <button type="button" onClick={handleAddMuscle}>Ajouter un muscle ciblé</button>
+                    <button type="button" className="add-button" onClick={handleAddMuscle}>Ajouter un muscle ciblé
+                    </button>
                 </div>
-                <button type="submit">{isEdit ? 'Modifier' : 'Créer'}</button>
+                <button type="submit" className="submit-button">{isEdit ? 'Modifier' : 'Créer'}</button>
             </form>
             <h2>Liste des Types d'Exercices</h2>
-            <ul>
+            <ul className="exercise-list">
                 {exerciseTypes.map((exerciseType) => (
-                    <li key={exerciseType._id}>
-                        <h3>{exerciseType.name}</h3>
-                        <p>Description: {exerciseType.description}</p>
-                        <p>Muscles Ciblés: {exerciseType.targetedMuscles.join(', ')}</p>
-                        <button onClick={() => handleEdit(exerciseType)}>Modifier</button>
-                        <button onClick={() => handleDelete(exerciseType._id!)}>Supprimer</button>
+                    <li className="exercise-item" key={exerciseType._id}>
+                        <h3 className="exercise-name">{exerciseType.name}</h3>
+                        <p className="exercise-description">Description: {exerciseType.description}</p>
+                        <p className="exercise-muscles">Muscles Ciblés: {exerciseType.targetedMuscles.join(', ')}</p>
+                        <button className="edit-button" onClick={() => handleEdit(exerciseType)}>Modifier</button>
+                        <button className="delete-button" onClick={() => handleDelete(exerciseType._id)}>Supprimer
+                        </button>
                     </li>
                 ))}
             </ul>
         </div>
+
     );
 }
 

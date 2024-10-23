@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ChallengeService } from "../../services/challenge.service";
 import { IChallenge } from "../../models/challenge.model";
 import { ServiceErrorCode } from "../../services/service.result";
-
+import "./ChallengeManagement.css";
 
 function ChallengeManagement() {
     const { salleId } = useParams<{ salleId: string | undefined }>();
@@ -115,13 +115,14 @@ function ChallengeManagement() {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>Proposition de Défis Spécifiques</h1>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            <form onSubmit={handleSubmit}>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <form className="challenge-form" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     name="name"
+                    className="input-field"
                     placeholder="Nom"
                     value={currentChallenge.name}
                     onChange={handleChange}
@@ -129,28 +130,35 @@ function ChallengeManagement() {
                 />
                 <textarea
                     name="description"
+                    className="textarea-field"
                     placeholder="Description"
                     value={currentChallenge.description}
                     onChange={handleChange}
                     required
                 />
-                <div>
+                <div className="equipment-section">
                     <h4>Équipements</h4>
                     {currentChallenge.equipment?.map((equip, index) => (
-                        <div key={index}>
+                        <div key={index} className="equipment-item">
                             <input
                                 type="text"
+                                className="input-field"
                                 value={equip}
                                 onChange={(e) => handleArrayChange(index, e.target.value, 'equipment')}
                             />
-                            <button type="button" onClick={() => handleRemoveArrayItem(index, 'equipment')}>Supprimer</button>
+                            <button type="button" className="remove-button"
+                                    onClick={() => handleRemoveArrayItem(index, 'equipment')}>Supprimer
+                            </button>
                         </div>
                     ))}
-                    <button type="button" onClick={() => handleAddArrayItem('equipment')}>Ajouter un équipement</button>
+                    <button type="button" className="add-button" onClick={() => handleAddArrayItem('equipment')}>Ajouter
+                        un équipement
+                    </button>
                 </div>
                 <input
                     type="text"
                     name="difficulty"
+                    className="input-field"
                     placeholder="Difficulté"
                     value={currentChallenge.difficulty}
                     onChange={handleChange}
@@ -159,28 +167,30 @@ function ChallengeManagement() {
                 <input
                     type="text"
                     name="type"
+                    className="input-field"
                     placeholder="Type"
                     value={currentChallenge.type}
                     onChange={handleChange}
                     required
                 />
-                <button type="submit">{isEdit ? 'Modifier' : 'Créer'}</button>
+                <button type="submit" className="submit-button">{isEdit ? 'Modifier' : 'Créer'}</button>
             </form>
             <h2>Liste des Défis</h2>
-            <ul>
+            <ul className="challenge-list">
                 {challenges.map((challenge) => (
-                    <li key={challenge._id}>
-                        <h3>{challenge.name}</h3>
-                        <p>Description: {challenge.description}</p>
-                        <p>Équipements: {challenge.equipment.join(', ')}</p>
-                        <p>Difficulté: {challenge.difficulty}</p>
-                        <p>Type: {challenge.type}</p>
-                        <button onClick={() => handleEdit(challenge)}>Modifier</button>
-                        <button onClick={() => handleDelete(challenge._id!)}>Supprimer</button>
+                    <li className="challenge-item" key={challenge._id}>
+                        <h3 className="challenge-name">{challenge.name}</h3>
+                        <p className="challenge-description">Description: {challenge.description}</p>
+                        <p className="challenge-equipment">Équipements: {challenge.equipment.join(', ')}</p>
+                        <p className="challenge-difficulty">Difficulté: {challenge.difficulty}</p>
+                        <p className="challenge-type">Type: {challenge.type}</p>
+                        <button className="edit-button" onClick={() => handleEdit(challenge)}>Modifier</button>
+                        <button className="delete-button" onClick={() => handleDelete(challenge._id)}>Supprimer</button>
                     </li>
                 ))}
             </ul>
         </div>
+
     );
 }
 

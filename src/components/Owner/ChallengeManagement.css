@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.challenge-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.input-field,
+.textarea-field {
+    width: calc(100% - 22px); /* To account for padding and border */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+.textarea-field {
+    resize: vertical;
+    height: 100px;
+}
+
+.equipment-section {
+    margin-bottom: 20px;
+}
+
+.equipment-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.remove-button,
+.add-button,
+.submit-button,
+.edit-button,
+.delete-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.remove-button,
+.add-button {
+    margin-left: 10px;
+    background-color: #dc3545; /* Red color for remove button */
+}
+
+.add-button {
+    background-color: #28a745; /* Green color for add button */
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.edit-button,
+.delete-button {
+    margin-top: 10px;
+}
+
+.edit-button {
+    background-color: #ffc107; /* Yellow color for edit button */
+}
+
+.delete-button {
+    background-color: #dc3545; /* Red color for delete button */
+    margin-left: 10px;
+}
+
+.challenge-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.challenge-item {
+    background: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
+
+.challenge-name {
+    margin-top: 0;
+    color: #333;
+}
+
+.challenge-description,
+.challenge-equipment,
+.challenge-difficulty,
+.challenge-type {
+    margin: 5px 0;
+    color: #555;
+}

@@ -40,10 +40,10 @@ function Login() {
             localStorage.setItem("user", JSON.stringify(user)); 
             console.log(token);
             if(res.result.user.accesses === 100) {
-                navigate('/admin/home');
+                navigate('/users');
                 return;
             }if(res.result.user.accesses === 50){
-                navigate('/owner/home');
+                navigate(`/salles/owner/${res.result.user._id}`);
                 return;
             }
             navigate('/salles');

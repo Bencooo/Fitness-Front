@@ -3,6 +3,7 @@ import { ChallengeService } from "../../services/challenge.service";
 import { UserChallengeService } from "../../services/userChallenge.service";
 import { IChallenge } from "../../models/challenge.model";
 import { ServiceErrorCode } from "../../services/service.result";
+import "./ChallengeList.css";
 
 const token = localStorage.getItem('token') || ''; // Assurez-vous que le token est correctement récupéré
 const userId = localStorage.getItem('userId') || ''; // Assurez-vous que l'ID de l'utilisateur est correctement récupéré
@@ -74,52 +75,58 @@ function ChallengeList() {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>Exploration des Défis</h1>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            
-            <div>
-                <label>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+            <div className="filter-section">
+                <label className="filter-label">
                     Difficulté:
-                    <select name="difficulty" value={filter.difficulty} onChange={handleFilterChange}>
+                    <select name="difficulty" value={filter.difficulty} onChange={handleFilterChange}
+                            className="filter-select">
                         <option value="">Toutes</option>
                         <option value="Easy">Facile</option>
                         <option value="Medium">Moyenne</option>
                         <option value="Hard">Difficile</option>
                     </select>
                 </label>
-                <label>
+                <label className="filter-label">
                     Type:
-                    <input type="text" name="type" value={filter.type} onChange={handleFilterChange} placeholder="Type d'exercice"/>
+                    <input type="text" name="type" value={filter.type} onChange={handleFilterChange}
+                           placeholder="Type d'exercice" className="filter-input"/>
                 </label>
-                <label>
+                <label className="filter-label">
                     Durée:
-                    <input type="number" name="duration" value={filter.duration} onChange={handleFilterChange} placeholder="Durée (en minutes)"/>
+                    <input type="number" name="duration" value={filter.duration} onChange={handleFilterChange}
+                           placeholder="Durée (en minutes)" className="filter-input"/>
                 </label>
             </div>
 
             <h2>Liste des Défis</h2>
-            <ul>
+            <ul className="challenge-list">
                 {filteredChallenges.map((challenge) => (
-                    <li key={challenge._id}>
-                        <h3>{challenge.name}</h3>
-                        <p>Description: {challenge.description}</p>
-                        <p>Équipements: {challenge.equipment.join(', ')}</p>
-                        <p>Difficulté: {challenge.difficulty}</p>
-                        <p>Type: {challenge.type}</p>
-                        <label>
+                    <li className="challenge-item" key={challenge._id}>
+                        <h3 className="challenge-name">{challenge.name}</h3>
+                        <p className="challenge-description">Description: {challenge.description}</p>
+                        <p className="challenge-equipment">Équipements: {challenge.equipment.join(', ')}</p>
+                        <p className="challenge-difficulty">Difficulté: {challenge.difficulty}</p>
+                        <p className="challenge-type">Type: {challenge.type}</p>
+                        <label className="challenge-completed">
                             Terminé
                             <input
                                 type="checkbox"
-                                checked={selectedChallenges.includes(challenge._id!)}
-                                onChange={() => handleCheckboxChange(challenge._id!)}
+                                checked={selectedChallenges.includes(challenge._id)}
+                                onChange={() => handleCheckboxChange(challenge._id)}
+                                className="challenge-checkbox"
                             />
                         </label>
                     </li>
                 ))}
             </ul>
-            <button onClick={handleValidateChallenges}>Valider les défis sélectionnés</button>
+            <button className="validate-button" onClick={handleValidateChallenges}>Valider les défis sélectionnés
+            </button>
         </div>
+
     );
 }
 

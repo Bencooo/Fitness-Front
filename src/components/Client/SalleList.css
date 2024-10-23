@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.salle-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.salle-item {
+    background: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
+
+.salle-name {
+    margin-top: 0;
+    color: #333;
+}
+
+.salle-address,
+.salle-description,
+.salle-contact,
+.salle-capacity,
+.salle-activities {
+    margin: 5px 0;
+    color: #555;
+}
+
+.show-challenge-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.show-challenge-button:hover {
+    background-color: #0056b3;
+}
